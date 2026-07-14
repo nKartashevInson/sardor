@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С днем свадьбы, Сардорбек! | ИТ INSON</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #FDFBF7;
+            --gold-accent: #C5A059;
+            --text-dark: #2C312E;
+            --card-width: 100%;
+        }
+
+        @media (min-width: 1024px) {
+            :root {
+                --card-width: 576px;
+                --polaroid-width: clamp(160px, min(calc((100vw - var(--card-width)) * 0.42), 25vh), 460px);
+                --side-free-space: calc(50vw - var(--card-width) / 2 - var(--polaroid-width));
+            }
+        }
+
+        @media (min-width: 1280px) {
+            :root {
+                --card-width: 768px;
+            }
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at center, #ffffff 0%, #FDFBF7 100%);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+
+        .polaroid-wrapper {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            z-index: 10;
+        }
+        
+        .polaroid-wrapper.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .polaroid {
+            background-color: #ffffff;
+            padding: 12px 12px 48px 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+            transform: rotate(var(--rot-mobile, 0deg));
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+            width: 300px;
+            margin: 0 auto;
+            cursor: pointer;
+            will-change: transform;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            background-color: #e2e8f0;
+        }
+
+        .central-card {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        
+        .central-card.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        @media (min-width: 1024px) {
+            .polaroid-wrapper {
+                position: absolute;
+                --aspect-ratio: 1.333;
+                --polaroid-height: calc(var(--polaroid-width) * (0.914 / var(--aspect-ratio) + 0.213));
+            }
+            .polaroid {
+                --polaroid-width: clamp(160px, min(calc((100vw - var(--card-width)) * 0.42), 25vh), 460px);
+                width: var(--polaroid-width);
+                padding: calc(var(--polaroid-width) * 0.043) calc(var(--polaroid-width) * 0.043) calc(var(--polaroid-width) * 0.17) calc(var(--polaroid-width) * 0.043);
+                transform: rotate(var(--rot-desktop, 0deg));
+            }
+            .polaroid img {
+                height: auto;
+            }
+            
+            .polaroid-wrapper:hover {
+                z-index: 50 !important;
+            }
+            .polaroid-wrapper:hover .polaroid {
+                transform: scale(1.15) rotate(0deg) translateY(-10px);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            }
+
+            .pos-1 { 
+                top: 2vh; 
+                left: calc(var(--side-free-space) * 0.05); 
+                --rot-desktop: -6deg; 
+                --aspect-ratio: 1.333; 
+            }
+            .pos-7 { 
+                top: calc(2vh + 0.33 * (96vh - var(--polaroid-height))); 
+                left: calc(var(--side-free-space) * 0.95); 
+                --rot-desktop: 4deg; 
+                --aspect-ratio: 1.500; 
+            }
+            .pos-3 { 
+                top: calc(2vh + 0.66 * (96vh - var(--polaroid-height))); 
+                left: calc(var(--side-free-space) * 0.05); 
+                --rot-desktop: -4deg; 
+                --aspect-ratio: 1.333; 
+            }
+            .pos-5 { 
+                bottom: 2vh; 
+                left: calc(var(--side-free-space) * 0.85); 
+                --rot-desktop: 6deg; 
+                --aspect-ratio: 1.333; 
+            }
+
+            .pos-2 { 
+                top: 2vh; 
+                right: calc(var(--side-free-space) * 0.05); 
+                --rot-desktop: 7deg; 
+                --aspect-ratio: 1.333; 
+            }
+            .pos-8 { 
+                top: calc(2vh + 0.33 * (96vh - var(--polaroid-height))); 
+                right: calc(var(--side-free-space) * 0.95); 
+                --rot-desktop: -3deg; 
+                --aspect-ratio: 1.500; 
+            }
+            .pos-4 { 
+                top: calc(2vh + 0.66 * (96vh - var(--polaroid-height))); 
+                right: calc(var(--side-free-space) * 0.05); 
+                --rot-desktop: 5deg; 
+                --aspect-ratio: 1.333; 
+            }
+            .pos-6 { 
+                bottom: 2vh; 
+                right: calc(var(--side-free-space) * 0.85); 
+                --rot-desktop: -6deg; 
+                --aspect-ratio: 2.165; 
+            }
+        }
+
+        .gold-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
+            border: none;
+            margin: 2rem 0;
+        }
+
+        .polaroid-wrapper.active {
+            z-index: 100 !important;
+        }
+        .polaroid-wrapper.active .polaroid {
+            transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(var(--scale, 2.2)) rotate(0deg) !important;
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen">
+
+    <main class="relative min-h-screen w-full flex flex-col lg:block items-center py-12 lg:py-0 overflow-hidden px-4">
+
+        <div class="z-20 w-full max-w-lg lg:max-w-xl xl:max-w-3xl mx-auto order-2 lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 my-8 lg:my-0 px-4 lg:px-0">
+            <article class="central-card bg-white/90 backdrop-blur-md border border-[#C5A059]/40 shadow-2xl rounded-sm p-8 md:p-14 text-center w-full">
+                
+                <p class="font-montserrat text-[#C5A059] tracking-[0.2em] text-xs uppercase mb-4 font-semibold">
+                    От ИТ-департамента INSON
+                </p>
+                
+                <h1 class="font-playfair text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-8 italic">
+                    С днем свадьбы,<br>Сардорбек!
+                </h1>
+                
+                <div class="font-montserrat text-gray-700 leading-relaxed text-sm md:text-base text-justify md:text-center space-y-4">
+                    <p>
+                        В этот особенный день весь коллектив от всей души поздравляет тебя с этим прекрасным событием! 
+                    </p>
+                    <p>
+                        Сегодня начинается новая, невероятно важная и светлая глава вашей жизни. Мы искренне желаем вам построить крепкую, дружную и счастливую семью. Пусть в вашем доме всегда царит уют, абсолютное взаимопонимание и радость, а любые жизненные задачи решаются легко и сообща. 
+                    </p>
+                    <p>
+                        Желаем, чтобы каждый ваш совместный день был наполнен любовью, поддержкой и теплом!
+                    </p>
+                </div>
+
+                <hr class="gold-line w-3/4 mx-auto opacity-70">
+
+                <h3 class="font-playfair text-xl md:text-2xl text-gray-900 mb-6 font-semibold">
+                    С наилучшими пожеланиями, твои коллеги:
+                </h3>
+
+                <ul class="grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-3 font-montserrat text-gray-800 font-medium text-xs md:text-sm">
+                    <li>Исмаилов Шахбоз</li>
+                    <li>Карташев Никита</li>
+                    <li>Кравченко Роман</li>
+                    <li>Маликов Афруз</li>
+                    <li>Наумов Никита</li>
+                    <li>Петров Ярослав</li>
+                    <li>Раимкулов Озодбек</li>
+                    <li>Рахибердиев Тимурмалик</li>
+                    <li>Сайдикариримов Азиз</li>
+                    <li>Сопов Руслан</li>
+                    <li>Тешаев Улугбек</li>
+                    <li>Уроков Сардор</li>
+                </ul>
+
+            </article>
+        </div>
+
+        <figure class="polaroid-wrapper order-1 pos-1" style="--rot-mobile: -2deg;">
+            <div class="polaroid">
+                <img src="photo/IMG_20250719_232035_881.jpg" alt="Командное фото 1" loading="lazy">
+            </div>
+        </figure>
+
+        <figure class="polaroid-wrapper order-1 pos-2" style="--rot-mobile: 3deg;">
+            <div class="polaroid">
+                <img src="photo/IMG_20251229_110240_709.JPG" alt="Командное фото 2" loading="lazy">
+            </div>
+        </figure>
+
+        <figure class="polaroid-wrapper order-3 pos-3" style="--rot-mobile: -1deg;">
+            <div class="polaroid">
+                <img src="photo/IMG_20250823_162011_247.jpg" alt="Командное фото 3" loading="lazy">
+            </div>
+        </figure>
+
+        <figure class="polaroid-wrapper order-3 pos-4" style="--rot-mobile: 2deg;">
+            <div class="polaroid">
+                <img src="photo/IMG_20250823_185117_125.jpg" alt="Командное фото 4" loading="lazy">
+            </div>
+        </figure>
+
+        <figure class="polaroid-wrapper order-3 pos-5" style="--rot-mobile: -3deg;">
+            <div class="polaroid">
+                <img src="photo/IMG_20260507_172945_316.jpg" alt="Командное фото 5" loading="lazy">
+            </div>
+        </figure>
+
+        <figure class="polaroid-wrapper order-3 pos-6" style="--rot-mobile: 1deg;">
+            <div class="polaroid">
+                <img src="photo/20251205_183352.jpg" alt="Командное фото 6" loading="lazy">
+            </div>
+        </figure>
+
+        <figure class="polaroid-wrapper order-3 lg:order-1 pos-7" style="--rot-mobile: -2deg;">
+            <div class="polaroid">
+                <img src="photo/SOL0200%201.png" alt="Командное фото 7" loading="lazy">
+            </div>
+        </figure>
+
+        <figure class="polaroid-wrapper order-3 pos-8" style="--rot-mobile: 4deg;">
+            <div class="polaroid">
+                <img src="photo/SOL068%201.png" alt="Командное фото 8" loading="lazy">
+            </div>
+        </figure>
+
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                const card = document.querySelector('.central-card');
+                if(card) card.classList.add('show');
+            }, 200);
+
+            const polaroids = document.querySelectorAll('.polaroid-wrapper');
+            
+            const indices = Array.from(polaroids.keys());
+            indices.sort(() => Math.random() - 0.5);
+
+            indices.forEach((index, i) => {
+                setTimeout(() => {
+                    polaroids[index].classList.add('show');
+                }, 600 + (i * 150));
+            });
+
+            let activeWrapper = null;
+
+            function activateCard(wrapper) {
+                activeWrapper = wrapper;
+                const card = wrapper.querySelector('.polaroid');
+                
+                const rect = card.getBoundingClientRect();
+                const viewCenterX = window.innerWidth / 2;
+                const viewCenterY = window.innerHeight / 2;
+                const cardCenterX = rect.left + rect.width / 2;
+                const cardCenterY = rect.top + rect.height / 2;
+                
+                const tx = viewCenterX - cardCenterX;
+                const ty = viewCenterY - cardCenterY;
+                
+                let scale = 2.2;
+                if (window.innerWidth < 640) {
+                    scale = (window.innerWidth * 0.95) / rect.width;
+                } else {
+                    const maxScaleByHeight = (window.innerHeight * 0.9) / rect.height;
+                    const maxScaleByWidth = (window.innerWidth * 0.9) / rect.width;
+                    scale = Math.min(maxScaleByHeight, maxScaleByWidth, 2.4);
+                }
+                
+                wrapper.style.setProperty('--tx', `${tx}px`);
+                wrapper.style.setProperty('--ty', `${ty}px`);
+                wrapper.style.setProperty('--scale', `${scale}`);
+                
+                wrapper.classList.add('active');
+            }
+
+            function deactivateCard(wrapper) {
+                wrapper.classList.remove('active');
+                wrapper.style.removeProperty('--tx');
+                wrapper.style.removeProperty('--ty');
+                wrapper.style.removeProperty('--scale');
+                
+                activeWrapper = null;
+            }
+
+            document.addEventListener('click', (e) => {
+                const clickedWrapper = e.target.closest('.polaroid-wrapper');
+                
+                if (activeWrapper) {
+                    if (clickedWrapper && clickedWrapper !== activeWrapper) {
+                        deactivateCard(activeWrapper);
+                        activateCard(clickedWrapper);
+                    } else {
+                        deactivateCard(activeWrapper);
+                    }
+                } else if (clickedWrapper) {
+                    activateCard(clickedWrapper);
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                if (activeWrapper) {
+                    deactivateCard(activeWrapper);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

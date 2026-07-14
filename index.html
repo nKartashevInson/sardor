@@ -170,6 +170,9 @@
         .polaroid-wrapper.active {
             z-index: 100 !important;
         }
+        .polaroid-wrapper.returning {
+            z-index: 99 !important;
+        }
         .polaroid-wrapper.active .polaroid {
             transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(var(--scale, 2.2)) rotate(0deg) !important;
             box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
@@ -300,6 +303,10 @@
             let activeWrapper = null;
 
             function activateCard(wrapper) {
+                if (wrapper._cleanupReturn) {
+                    wrapper._cleanupReturn();
+                }
+
                 activeWrapper = wrapper;
                 const card = wrapper.querySelector('.polaroid');
                 
@@ -333,6 +340,32 @@
                 wrapper.style.removeProperty('--tx');
                 wrapper.style.removeProperty('--ty');
                 wrapper.style.removeProperty('--scale');
+                
+                wrapper.classList.add('returning');
+                
+                const card = wrapper.querySelector('.polaroid');
+                let timeoutId = null;
+                
+                const handleTransitionEnd = (e) => {
+                    if (e.propertyName === 'transform') {
+                        cleanup();
+                    }
+                };
+                
+                const cleanup = () => {
+                    wrapper.classList.remove('returning');
+                    card.removeEventListener('transitionend', handleTransitionEnd);
+                    if (timeoutId) {
+                        clearTimeout(timeoutId);
+                        timeoutId = null;
+                    }
+                    wrapper._cleanupReturn = null;
+                };
+                
+                card.addEventListener('transitionend', handleTransitionEnd);
+                timeoutId = setTimeout(cleanup, 700);
+                
+                wrapper._cleanupReturn = cleanup;
                 
                 activeWrapper = null;
             }
